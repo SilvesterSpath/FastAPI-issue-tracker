@@ -25,4 +25,14 @@ def create_issue(payload: IssueCreate):
   issues.append(new_issue)
   save_data(issues)
   return new_issue
+
+
+@router.get("/{issue_id}", response_model=IssueResponse)
+def get_issue(issue_id: str):
+  """ Get a specific issue """
+  issues = load_data()
+  for issue in issues:
+    if issue["id"] == issue_id:
+      return issue
+  raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
   
