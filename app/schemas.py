@@ -3,14 +3,14 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class IssueStatus(str, Enum):
-  open = "open"
-  closed = "closed"
-  in_progress = "in_progress"
+  OPEN = "open"
+  CLOSED = "closed"
+  IN_PROGRESS = "in_progress"
 
 class IssuePriority(str, Enum):
-  low = "low"
-  medium = "medium"
-  high = "high"
+  LOW = "low"
+  MEDIUM = "medium"
+  HIGH = "high"
 
 class IssueCreate(BaseModel):
   title: str = Field(min_length=3, max_length=100)
