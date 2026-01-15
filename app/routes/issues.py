@@ -35,4 +35,25 @@ def get_issue(issue_id: str):
     if issue["id"] == issue_id:
       return issue
   raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
-  
+
+@router.put("/{issue_id}", response_model=IssueResponse)
+def update_issue(issue_id: str, payload: IssueUpdate):
+  """ Update a specific issue """
+  issues = load_data()
+  for issue in issues:
+    if issue["id"] == issue_id:
+      issue.update(payload.model_dump(exclude_unset=True))
+      save_data(issues)
+      return issue
+  raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
+
+@router.delete("/{issue_id}", status_code=status.HTTP_200_OK)
+def delete_issue(issue_id: str):
+  """ Delete a specific issue """
+  issues = load_data()
+  for issue in issues:
+    if issue["id"] == issue_id:
+      issues.remove(issue)
+      save_data(issues)
+      return {"message": "Issue deleted successfully"}
+  raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
